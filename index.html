@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TerraFirmaCraft Modern · 1.21.1</title>
+<style>
+  :root {
+    --bg: #141210;
+    --bg-2: #1c1916;
+    --ink: #f3ecdf;
+    --muted: #b3a898;
+    --faint: #7d7368;
+    --line: #3a332c;
+    --copper: #d4844a;
+    --copper-2: #f0c9a0;
+    --yes: #8fbf7a;
+    --port: #8eb4d4;
+    --old: #e0b15a;
+    --miss: #e07a6a;
+    --check: #c4b8a8;
+    --chip: #26221e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    line-height: 1.45;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 36px 24px 64px; }
+  header { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 28px; align-items: end; }
+  .kicker {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--copper);
+    margin: 0 0 8px;
+  }
+  h1 {
+    font-family: Georgia, "Palatino Linotype", serif;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 1.05;
+    margin: 0 0 12px;
+  }
+  .lede { color: var(--muted); max-width: 62ch; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 28px; }
+  .stat {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 12px 14px 10px;
+  }
+  .stat b { display: block; font-family: Georgia, serif; font-size: 28px; font-weight: 500; }
+  .stat span { color: var(--faint); font-size: 12px; }
+  .stat.yes b { color: var(--yes); }
+  .stat.port b { color: var(--port); }
+  .stat.old b { color: var(--old); }
+  .stat.miss b { color: var(--miss); }
+  .stat.check b { color: var(--check); }
+  .bar { display: flex; height: 8px; margin-top: 14px; background: #2a2622; }
+  .bar i { display: block; height: 100%; }
+  .note {
+    margin-top: 22px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--copper);
+    background: var(--bg-2);
+    color: var(--muted);
+  }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 10px; align-items: center; }
+  input[type="search"] {
+    background: var(--bg-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 8px 12px;
+    min-width: 240px;
+    font: inherit;
+  }
+  input:focus { outline: 1px solid var(--copper); }
+  button.chip {
+    background: var(--chip);
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    font: inherit;
+    cursor: pointer;
+  }
+  button.chip.on { color: var(--ink); border-color: var(--copper); background: #2c241c; }
+  .count { color: var(--faint); font-size: 13px; margin: 8px 0 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 600;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+  }
+  td { padding: 10px; border-bottom: 1px solid #2a2622; vertical-align: top; }
+  tr:hover td { background: #1a1714; }
+  a { color: var(--copper-2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .mark { font-size: 13px; }
+  .mark.yes { color: var(--yes); }
+  .mark.port { color: var(--port); }
+  .mark.old { color: var(--old); }
+  .mark.miss { color: var(--miss); }
+  .mark.check { color: var(--check); }
+  .sub { display: block; color: var(--faint); font-size: 12px; margin-top: 3px; }
+  .empty { color: var(--faint); padding: 24px 0; }
+  @media (max-width: 860px) {
+    header, .stats { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 32px; }
+    header { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <p class="kicker">CurseForge · Minecraft 1.21.1 · 24 сен 2026</p>
+      <h1>TerraFirmaCraft Modern</h1>
+      <p class="lede">Какие моды из списка сборки уже есть на 1.21.1, какие остались на старых версиях, и где поиск попал в чужой аддон.</p>
+    </div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <p class="note">«Есть» значит, что проект с тем же именем находится в поиске модов CurseForge с фильтром версии 1.21.1. Сомнительные строки не засчитаны: в примечании указано, какой проект открылся вместо нужного.</p>
+  <div class="controls" id="status"></div>
+  <div class="controls" id="groups"></div>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Название или slug" autocomplete="off">
+  </div>
+  <p class="count" id="shown"></p>
+  <table>
+    <thead>
+      <tr><th>Мод из списка</th><th>Статус</th><th>Проект на CurseForge</th><th>Группа</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="empty" id="empty" hidden>По этому фильтру модов нет.</p>
+</div>
+<script>
+const MODS = [{"name":"AAA Particles","status":"yes","title":"AAA Particles","slug":"aaa-particles","note":""},{"name":"AE2 Insert Export Card","status":"miss","title":"","slug":"","note":""},{"name":"AE2NetworkAnalyzer","status":"miss","title":"","slug":"","note":""},{"name":"AE2WTLib","status":"check","title":"p455w0rd's AE2 Wireless Terminals Patch","slug":"p455w0rds-ae2-wireless-terminals-patch","note":"Найден патч к Wireless Terminals, не сама библиотека, и он не на 1.21.1."},{"name":"AGS ModernMarkings Mod","status":"miss","title":"","slug":"","note":""},{"name":"AI-Improvements","status":"yes","title":"AI Improvements: Performance Tuning","slug":"ai-improvements","note":""},{"name":"APTweaks: Core","status":"port","title":"APTweaks: Core (11.x Classic)","slug":"adaptive-performance-tweaks-core","note":"Линейка 11.x Classic."},{"name":"APTweaks: Gamerules","status":"port","title":"APTweaks: Gamerules (11.x Classic)","slug":"adaptive-performance-tweaks-gamerules","note":"Линейка 11.x Classic."},{"name":"APTweaks: Items","status":"port","title":"APTweaks: Items (11.x Classic)","slug":"adaptive-performance-tweaks-items","note":"Линейка 11.x Classic."},{"name":"APTweaks: Player","status":"port","title":"APTweaks: Player Login Optimization and Protection (11.x Classic)","slug":"adaptive-performance-tweaks-player","note":"Линейка 11.x Classic."},{"name":"Ad Astra","status":"yes","title":"Ad Astra","slug":"ad-astra","note":""},{"name":"Additional Placements","status":"yes","title":"Additional Placements","slug":"additional-placements","note":""},{"name":"Advanced Peripherals","status":"yes","title":"Advanced Peripherals","slug":"advanced-peripherals","note":""},{"name":"AdvancedCoreInfo","status":"yes","title":"Advanced Core Info (ACI)","slug":"advanced-core-info","note":""},{"name":"AdvancedLootInfo","status":"yes","title":"Advanced Loot Info (ALI)","slug":"advanced-loot-info","note":""},{"name":"All The Leaks","status":"yes","title":"AllTheLeaks (Memory Leak Fix)","slug":"alltheleaks","note":""},{"name":"Almanac","status":"yes","title":"Almanac Lib","slug":"almanac-lib","note":""},{"name":"AmbientSounds","status":"yes","title":"AmbientSounds 6","slug":"ambientsounds","note":""},{"name":"Applied Ammo Box","status":"yes","title":"[TaCZ] Applied Ammo Box","slug":"tacz-applied-ammo-box","note":""},{"name":"ArborFirmaCraft","status":"yes","title":"ArborFirmaCraft","slug":"arborfirmacraft","note":""},{"name":"Architectury","status":"yes","title":"Architectury API","slug":"architectury-api","note":""},{"name":"Armor Quick Swap","status":"yes","title":"Armor Quick Swap","slug":"armor-quick-swap","note":""},{"name":"Arthropocolypse","status":"old","title":"[Deprecated] Arthropocolypse","slug":"arthropocolypse","note":""},{"name":"AstikorCarts Redux","status":"yes","title":"AstikorCarts Redux","slug":"astikor-carts-redux","note":""},{"name":"AttributeFix","status":"yes","title":"AttributeFix","slug":"attributefix","note":""},{"name":"BaguetteLib","status":"yes","title":"BaguetteLib","slug":"baguettelib","note":""},{"name":"Balm","status":"yes","title":"Balm","slug":"balm","note":""},{"name":"Barrels 2012","status":"yes","title":"Barrels 2012","slug":"barrels-2012","note":""},{"name":"Beneath","status":"yes","title":"Beneath","slug":"beneath","note":""},{"name":"Better P2P","status":"yes","title":"Better P2P","slug":"betterp2p","note":""},{"name":"Better Ping Display","status":"yes","title":"Better Ping Display","slug":"better-ping-display","note":""},{"name":"Block Runner","status":"yes","title":"Block Runner","slug":"block-runner","note":""},{"name":"Blur (Fabric)","status":"yes","title":"Blur+","slug":"blur-fabric","note":""},{"name":"Bookshelf","status":"yes","title":"Bookshelf","slug":"bookshelf","note":""},{"name":"Botarium","status":"old","title":"Botarium","slug":"botarium","note":""},{"name":"Building Gadgets 2","status":"check","title":"BuildingGadgets2GUI","slug":"buildinggadgets2gui","note":"Совпало с BuildingGadgets2GUI, не с самим модом."},{"name":"C4t2's structures(TFC)","status":"miss","title":"TFC ruined world","slug":"","note":""},{"name":"CC UTF-8 Compat","status":"old","title":"CC UTF-8 Compat","slug":"cc-utf-8-compat","note":""},{"name":"CC: Tweaked","status":"check","title":"More Red x CC:Tweaked Compat","slug":"more-red-x-cc-tweaked-compat","note":"Поиск открыл More Red x CC:Tweaked Compat, не сам CC: Tweaked."},{"name":"Carpeted","status":"yes","title":"Carpeted","slug":"carpeted","note":""},{"name":"Carry On","status":"yes","title":"Carry On","slug":"carry-on","note":""},{"name":"Chalk","status":"yes","title":"Chalk","slug":"chalk","note":""},{"name":"Chat Heads","status":"yes","title":"Chat Heads","slug":"chat-heads","note":""},{"name":"Cherished Worlds","status":"yes","title":"Cherished Worlds","slug":"cherished-worlds","note":""},{"name":"Chest Tracker","status":"yes","title":"Chest Tracker","slug":"chest-tracker","note":""},{"name":"Chunky","status":"check","title":"Chunky McChunkFace","slug":"chunky-mcchunkface","note":"Совпало с Chunky McChunkFace. Это другой мод."},{"name":"Client Tweaks","status":"yes","title":"Client Tweaks","slug":"client-tweaks","note":""},{"name":"Cloth Config v10 API","status":"yes","title":"Cloth Config API (Fabric/Forge/NeoForge)","slug":"cloth-config","note":""},{"name":"Colorwheel","status":"yes","title":"Colorwheel","slug":"colorwheel","note":""},{"name":"Comforts","status":"yes","title":"Comforts","slug":"comforts","note":""},{"name":"Configuration","status":"yes","title":"Configuration","slug":"configuration","note":""},{"name":"Construction Wand","status":"yes","title":"Construction Wand (Fabric)","slug":"construction-wand-fabric","note":""},{"name":"Controlling","status":"yes","title":"Controlling","slug":"controlling","note":""},{"name":"Corpse","status":"yes","title":"Corpse","slug":"corpse","note":""},{"name":"Corpse Curios Compatibility","status":"miss","title":"Death Detangler","slug":"","note":""},{"name":"CosmeticArmorReworked","status":"yes","title":"Cosmetic Armor Reworked","slug":"cosmetic-armor-reworked","note":""},{"name":"Cosy Critters & Creepy Crawlies","status":"yes","title":"Cosy Critters & Creepy Crawlies","slug":"cosy-critters","note":""},{"name":"CraftPresence","status":"yes","title":"CraftPresence","slug":"craftpresence","note":""},{"name":"Crafting Station Improved","status":"old","title":"Crafting Station Improved","slug":"crafting-station-improved","note":""},{"name":"CraftingTweaks","status":"yes","title":"Crafting Tweaks","slug":"crafting-tweaks","note":""},{"name":"Crash Assistant","status":"yes","title":"Crash Assistant","slug":"crash-assistant","note":""},{"name":"CrashExploitFixer","status":"yes","title":"CrashExploitFixer","slug":"crashexploitfixer","note":""},{"name":"Create","status":"yes","title":"Create","slug":"create","note":""},{"name":"Create Crafts & Additions","status":"yes","title":"Create Crafts & Additions","slug":"createaddition","note":""},{"name":"Create Deco","status":"yes","title":"Create Deco","slug":"create-deco","note":""},{"name":"Create FluidLogistics","status":"yes","title":"Create: FluidLogistics","slug":"create-fluidlogistic","note":""},{"name":"Create Horse Power","status":"yes","title":"Create Horse Power","slug":"create-horse-power","note":""},{"name":"Create Hypertube","status":"yes","title":"Create: Hypertubes","slug":"hypertubes","note":""},{"name":"Create Liquid Fuel","status":"yes","title":"Create: Liquid Fuel","slug":"create-liquid-fuel","note":""},{"name":"Create Picky Wheels","status":"yes","title":"Create Picky Wheels","slug":"create-picky-waterwheels","note":""},{"name":"Create Repair: Unofficial Create Community Patch","status":"miss","title":"","slug":"","note":""},{"name":"Create Stock Bridge","status":"yes","title":"Create Stock Bridge","slug":"create-stock-bridge","note":""},{"name":"Create: Connected","status":"yes","title":"Create: Connected","slug":"create-connected","note":""},{"name":"Create: Copycats+","status":"yes","title":"Create: Copycats+","slug":"copycats","note":""},{"name":"Create: Steam 'n' Rails","status":"old","title":"Create: Steam 'n' Rails","slug":"create-steam-n-rails","note":""},{"name":"Create: Steam Powered","status":"old","title":"Create: Steam Powered (1.16/1.18/1.20)","slug":"steam-powered-create","note":""},{"name":"Create: Threaded Trains","status":"yes","title":"Create: Threaded Trains","slug":"create-threaded-trains","note":""},{"name":"Create: Vintage Improvements","status":"port","title":"Create-Vintage-Improvements-Lite","slug":"create-vintage-improvements-lite","note":"На 1.21.1 есть Create-Vintage-Improvements-Lite, не полный мод."},{"name":"CreativeCore","status":"yes","title":"CreativeCore","slug":"creativecore","note":""},{"name":"Cubes Without Borders","status":"yes","title":"Cubes Without Borders","slug":"cubes-without-borders","note":""},{"name":"Cucumber Library","status":"yes","title":"Cucumber Library","slug":"cucumber","note":""},{"name":"Curios API","status":"yes","title":"Curios API","slug":"curios","note":""},{"name":"Cut Through","status":"yes","title":"Cut Through","slug":"cut-through","note":""},{"name":"Dea's Fission","status":"old","title":"Dea's Fission","slug":"deafission","note":""},{"name":"Decay 2012","status":"yes","title":"Decay 2012","slug":"decay-2012","note":""},{"name":"Default Options","status":"yes","title":"Default Options","slug":"default-options","note":""},{"name":"Desert Behemoths: Sandworms!","status":"old","title":"Desert Behemoths: Sandworms!","slug":"desert-behemoths-sandworms","note":""},{"name":"Detected setBlock Be Gone","status":"yes","title":"Detected setBlock Be Gone","slug":"detected-setblock-be-gone","note":""},{"name":"Digger Helmet","status":"old","title":"Digger Helmet","slug":"digger-helmet","note":""},{"name":"Distant Horizons","status":"yes","title":"Distant Horizons: A Level of Detail mod","slug":"distant-horizons","note":""},{"name":"Do a Barrel Roll","status":"yes","title":"Do a Barrel Roll","slug":"do-a-barrel-roll","note":""},{"name":"Domum Ornamentum","status":"yes","title":"Domum Ornamentum","slug":"domum-ornamentum","note":""},{"name":"Drippy Loading Screen","status":"yes","title":"Drippy Loading Screen","slug":"drippy-loading-screen","note":""},{"name":"Durak Mode","status":"miss","title":"Gurakai's Modular Enhancement Materials","slug":"","note":""},{"name":"EMI","status":"yes","title":"EMI","slug":"emi","note":""},{"name":"EMI++","status":"yes","title":"EMI++","slug":"emixx","note":""},{"name":"Embeddium","status":"yes","title":"Embeddium","slug":"embeddium","note":""},{"name":"Enderman Overhaul","status":"yes","title":"Enderman Overhaul","slug":"enderman-overhaul","note":""},{"name":"EnhancedVisuals","status":"yes","title":"EnhancedVisuals","slug":"enhancedvisuals","note":""},{"name":"EntityCulling","status":"yes","title":"Entity Culling Fabric/Forge","slug":"entityculling","note":""},{"name":"Epic Knights of TerraFirma","status":"old","title":"Epic Knights of TerraFirma","slug":"knights-of-terrafirma","note":""},{"name":"Epic Knights: Antique Legacy","status":"yes","title":"Epic Knights: Antique Legacy","slug":"epic-knights-antique-legacy","note":""},{"name":"Epic-Knights: Shields, Armor and Weapons","status":"yes","title":"Epic Knights: Shields, Armor and Weapons [Fabric/Forge/NeoForge]","slug":"epic-knights-armor-and-weapons","note":""},{"name":"Etched","status":"yes","title":"Etched","slug":"etched","note":""},{"name":"Euphoria Patcher","status":"miss","title":"Euphoria Patches","slug":"","note":""},{"name":"Every Compat","status":"yes","title":"Every Compat (Wood Good)","slug":"every-compat","note":""},{"name":"Exposure","status":"yes","title":"Exposure","slug":"exposure","note":""},{"name":"ExtendedAE","status":"yes","title":"ExtendedAE","slug":"ex-pattern-provider","note":""},{"name":"Extreme Sound Muffler","status":"yes","title":"Extreme sound muffler - (Neo)Forge","slug":"extreme-sound-muffler","note":""},{"name":"FPS Reducer","status":"yes","title":"FPS Reducer","slug":"fps-reducer","note":""},{"name":"FTB Backups 2","status":"yes","title":"FTB Backups 2","slug":"ftb-backups-2","note":""},{"name":"FTB Chunks","status":"check","title":"Buying Chunks — FTB Chunks Addon","slug":"buying-chunks-ftb-chunks-addon","note":"Совпало с аддоном Buying Chunks, не с FTB Chunks."},{"name":"FTB Chunks x Xaero's Map Compat","status":"yes","title":"FTB Chunks x Xaero's Compat","slug":"ftbxaerocompat","note":""},{"name":"FTB Essentials","status":"yes","title":"FTB Essentials (Forge & Fabric)","slug":"ftb-essentials","note":""},{"name":"FTB Filter System","status":"yes","title":"FTB Filter System","slug":"ftb-filter-system","note":""},{"name":"FTB Library","status":"yes","title":"FTB Library (NeoForge)","slug":"ftb-library-forge","note":""},{"name":"FTB Quests","status":"check","title":"ExtraQuests [FTB Quests]","slug":"extraquests","note":"Совпало с ExtraQuests, не с FTB Quests."},{"name":"FTB Ranks","status":"yes","title":"FTB Ranks (NeoForge)","slug":"ftb-ranks-forge","note":""},{"name":"FTB Teams","status":"check","title":"TeamPins - FTB Teams Map Integration","slug":"teampins-ftb-teams-map-integration","note":"Совпало с TeamPins, не с FTB Teams."},{"name":"FTB XMod Compat","status":"yes","title":"FTB XMod Compat","slug":"ftb-xmod-compat","note":""},{"name":"FancyMenu","status":"yes","title":"FancyMenu","slug":"fancymenu","note":""},{"name":"Fast IP Ping","status":"yes","title":"Fast IP Ping","slug":"fast-ip-ping","note":""},{"name":"Fast Suite","status":"yes","title":"FastSuite","slug":"fastsuite","note":""},{"name":"Fast Workbench","status":"yes","title":"FastWorkbench","slug":"fastworkbench","note":""},{"name":"Ferrite Core","status":"yes","title":"FerriteCore ((Neo)Forge)","slug":"ferritecore","note":""},{"name":"Firma: Civilization","status":"old","title":"Firma: Civilization (TFC)","slug":"firmaciv","note":""},{"name":"FirmaCiv+","status":"check","title":"Firma: Civilization (TFC)","slug":"firmaciv","note":"Отдельный FirmaCiv+ не найден. Совпал с Firma: Civilization без файлов 1.21.1."},{"name":"Firmalife","status":"yes","title":"FirmaLife","slug":"firmalife","note":""},{"name":"FlickerFix","status":"yes","title":"FlickerFix","slug":"flickerfix","note":""},{"name":"Fowl Play","status":"yes","title":"Fowl Play","slug":"fowlplay","note":""},{"name":"FramedBlocks","status":"yes","title":"FramedBlocks","slug":"framedblocks","note":""},{"name":"FullStack Watchdog","status":"yes","title":"FullStack Watchdog","slug":"fullstack-watchdog","note":""},{"name":"Fzzy Config","status":"yes","title":"Fzzy Config","slug":"fzzy-config","note":""},{"name":"GeckoLib 4","status":"yes","title":"GeckoLib","slug":"geckolib","note":""},{"name":"Glodium","status":"yes","title":"Glodium","slug":"glodium","note":""},{"name":"GoProne","status":"old","title":"GoProne","slug":"goprone","note":""},{"name":"Grappling Hook Mod","status":"port","title":"Grappling Hook Mod: Skybound","slug":"grapplemod-skybound","note":"На 1.21.1 проект называется Grappling Hook Mod: Skybound."},{"name":"Greate","status":"check","title":"Ars Nouveau: Greatest Discount","slug":"ars-nouveau-greatest-discount","note":"Совпало с Ars Nouveau: Greatest Discount. Это другой мод."},{"name":"GregTech","status":"yes","title":"GregTech CEu Modern","slug":"gregtechceu-modern","note":""},{"name":"GregTech Modern Utilities","status":"old","title":"GregTech Modern Utilities","slug":"gregtech-modern-utilities","note":""},{"name":"GregTech Molecule Drawings","status":"yes","title":"GregTech Molecule Drawings","slug":"gregtech-molecule-drawings","note":""},{"name":"Gregtech Terminals","status":"old","title":"Gregtech Terminals","slug":"gtceu-terminals","note":""},{"name":"GuideME","status":"yes","title":"GuideME","slug":"guideme","note":""},{"name":"Hang Glider","status":"yes","title":"Hang Glider","slug":"hang-glider","note":""},{"name":"Horses Can Swim","status":"yes","title":"Horses can Swim","slug":"horses-can-swim","note":""},{"name":"I <3 TFC","status":"miss","title":"TFC + IE Crossover","slug":"","note":""},{"name":"ImmediatelyFast","status":"yes","title":"ImmediatelyFast","slug":"immediatelyfast","note":""},{"name":"Immersive Aircraft","status":"yes","title":"Immersive Aircraft","slug":"immersive-aircraft","note":""},{"name":"Immersive Optimization","status":"yes","title":"Immersive Optimization","slug":"immersive-optimization","note":""},{"name":"Inventory HUD+","status":"yes","title":"Inventory HUD+","slug":"inventory-hud-forge","note":""},{"name":"Inventory Profiles Next","status":"yes","title":"Inventory Profiles Next","slug":"inventory-profiles-next","note":""},{"name":"Iris Shader Folder","status":"yes","title":"Iris/Oculus Shader Folder","slug":"iris-shader-folder","note":""},{"name":"IrisSearch","status":"yes","title":"Iris & Oculus Search","slug":"iris-search","note":""},{"name":"ItemPhysicLite","status":"yes","title":"ItemPhysic Lite","slug":"itemphysic-lite","note":""},{"name":"Jade","status":"yes","title":"Jade","slug":"jade","note":""},{"name":"Jade Addons","status":"yes","title":"Jade Addons (Neo/Forge)","slug":"jade-addons","note":""},{"name":"Jellies","status":"old","title":"Jellies","slug":"jellies","note":""},{"name":"Konkrete","status":"yes","title":"Konkrete","slug":"konkrete","note":""},{"name":"Kotlin for Forge","status":"yes","title":"Kotlin for Forge","slug":"kotlin-for-forge","note":""},{"name":"Krypton Reno","status":"yes","title":"Krypton Reno","slug":"krypton-fnp","note":""},{"name":"KubeJS","status":"yes","title":"KubeJS","slug":"kubejs","note":""},{"name":"KubeJS Create","status":"yes","title":"KubeJS Create","slug":"kubejs-create","note":""},{"name":"KubeJS TFC","status":"yes","title":"KubeJS TFC","slug":"kubejs-tfc","note":""},{"name":"Let Me Despawn","status":"yes","title":"Let Me Despawn","slug":"let-me-despawn","note":""},{"name":"Lithostitched","status":"yes","title":"Lithostitched","slug":"lithostitched","note":""},{"name":"Load My F***ing Tags","status":"miss","title":"","slug":"","note":""},{"name":"Lodestone","status":"yes","title":"Lodestone","slug":"lodestone","note":""},{"name":"LootJS","status":"yes","title":"LootJS: KubeJS Addon","slug":"lootjs","note":""},{"name":"Lootr","status":"yes","title":"Lootr (Forge & NeoForge)","slug":"lootr","note":""},{"name":"LowDragLib","status":"old","title":"LowDragLib2 - Forge (Unofficial Port)","slug":"lowdraglib2-unofficial-port","note":""},{"name":"ME Requester","status":"yes","title":"ME Requester","slug":"merequester","note":""},{"name":"MEGA Cells","status":"yes","title":"MEGA Cells","slug":"mega-cells","note":""},{"name":"Macaw's All-In-One for TFC","status":"check","title":"Macaw's Furniture for TFC","slug":"macaws-furniture-tfc","note":"Найден Macaw's Furniture for TFC, не сборка All-In-One."},{"name":"Man of Many Planes","status":"yes","title":"Man of Many Planes","slug":"man-of-many-planes","note":""},{"name":"MapSyncer","status":"miss","title":"Minimapsync","slug":"","note":""},{"name":"Measurements","status":"yes","title":"Measurements","slug":"measurements","note":""},{"name":"Melody","status":"yes","title":"Melody","slug":"melody","note":""},{"name":"ModernFix","status":"yes","title":"ModernFix","slug":"modernfix","note":""},{"name":"Moonlight Library","status":"yes","title":"Moonlight Lib","slug":"selene","note":""},{"name":"More Red","status":"yes","title":"More Red","slug":"more-red","note":""},{"name":"More Red x CC:Tweaked Compat","status":"yes","title":"More Red x CC:Tweaked Compat","slug":"more-red-x-cc-tweaked-compat","note":""},{"name":"Mouse Tweaks","status":"yes","title":"Mouse Tweaks","slug":"mouse-tweaks","note":""},{"name":"MyServerIsCompatible","status":"yes","title":"My Server Is Compatible","slug":"my-server-is-compatible","note":""},{"name":"NaNHealthFixer","status":"yes","title":"NaN Health Fixer","slug":"nan-health-fixer","note":""},{"name":"No Chat Reports","status":"yes","title":"No Chat Reports","slug":"no-chat-reports","note":""},{"name":"Not A Manual Anvil","status":"old","title":"Not A Manual Anvil","slug":"not-a-manual-anvil","note":""},{"name":"Not Enough Recipe Book","status":"yes","title":"Not Enough Recipe Book [NERB]","slug":"notenoughrecipebook","note":""},{"name":"NotEnoughAnimations","status":"yes","title":"Not Enough Animations","slug":"not-enough-animations","note":""},{"name":"OctoLib","status":"yes","title":"ShatterLib | OctoLib","slug":"shatterbyte-lib","note":""},{"name":"Oculus","status":"check","title":"Ocuwheel - Iris & Oculus Flywheel Compat for Create","slug":"ocuwheel-oculus-flywheel-compat","note":"Совпало с Ocuwheel, не с Oculus."},{"name":"PacketFixer","status":"yes","title":"PacketFixer","slug":"packetfixer","note":""},{"name":"Panda's Falling Tree's","status":"yes","title":"Panda's Falling Trees","slug":"pandas-falling-trees","note":""},{"name":"PandaLib","status":"yes","title":"PandaLib","slug":"pandalib","note":""},{"name":"PaperNote","status":"miss","title":"Carbon Paper - Copy and paste signs and noteblocks","slug":"","note":""},{"name":"Particle Core","status":"yes","title":"Particle Core","slug":"particle-core","note":""},{"name":"Particular Reforged","status":"yes","title":"Particular Reforged","slug":"particular-reforged","note":""},{"name":"Patchouli","status":"yes","title":"Patchouli","slug":"patchouli","note":""},{"name":"PhoenixChromaticCodes","status":"miss","title":"Phoenix's Chromatic Codes","slug":"","note":""},{"name":"Pick Up Notifier","status":"yes","title":"Pick Up Notifier","slug":"pick-up-notifier","note":""},{"name":"Ping","status":"yes","title":"Ping","slug":"ping","note":""},{"name":"Placebo","status":"yes","title":"Placebo","slug":"placebo","note":""},{"name":"PlayerRevive","status":"yes","title":"PlayerRevive","slug":"playerrevive","note":""},{"name":"PlayerRevive tacz/sbw compitability","status":"old","title":"[TaCZ/SBW] PlayerRevive gun mod compitability","slug":"tacz-sbw-playerrevive-gun-mod-compitability","note":""},{"name":"PolyLib","status":"yes","title":"PolyLib","slug":"polylib","note":""},{"name":"Primitive creatures","status":"yes","title":"Primitive creatures","slug":"primitive-creatures","note":""},{"name":"Puzzles Lib","status":"yes","title":"Puzzles Lib","slug":"puzzles-lib","note":""},{"name":"Radium","status":"yes","title":"Radium Reforged","slug":"radium-reforged","note":""},{"name":"Realm RPG: Fallen Adventurers","status":"yes","title":"Realm RPG: Fallen Adventurers","slug":"realm-rpg-fallen-adventurers","note":""},{"name":"Reliable Recipes","status":"yes","title":"Reliable Recipes","slug":"reliable-recipes","note":""},{"name":"Reliable Remover","status":"yes","title":"Reliable Remover","slug":"reliable-remover","note":""},{"name":"Resourceful Lib","status":"yes","title":"Resourceful Lib","slug":"resourceful-lib","note":""},{"name":"Resourcefulconfig","status":"yes","title":"Resourceful Config","slug":"resourceful-config","note":""},{"name":"Rhino","status":"yes","title":"Rhino","slug":"rhino","note":""},{"name":"Riichi Mahjong Forge","status":"miss","title":"","slug":"","note":""},{"name":"Roads and Roofs TFC","status":"yes","title":"Roads and Roofs TFC","slug":"roads-and-roofs-tfc","note":""},{"name":"Sacks 'N Such","status":"old","title":"Sacks 'N Such","slug":"sacks-n-such","note":""},{"name":"Saturn","status":"yes","title":"Saturn","slug":"saturn","note":""},{"name":"Searchables","status":"yes","title":"Searchables","slug":"searchables","note":""},{"name":"SeasonHud","status":"yes","title":"SeasonHud","slug":"seasonhud","note":""},{"name":"Showcaser","status":"old","title":"Showcaser","slug":"showcaser","note":""},{"name":"Simple Voice Chat","status":"yes","title":"Simple Voice Chat","slug":"simple-voice-chat","note":""},{"name":"Simply Light","status":"yes","title":"Simply Light","slug":"simply-light","note":""},{"name":"Simply Stacked Dimensions","status":"old","title":"Simply Stacked Dimensions","slug":"simply-stacked-dimensions","note":""},{"name":"SmartBrainLib","status":"yes","title":"SmartBrainLib (Forge/Fabric/Quilt)","slug":"smartbrainlib","note":""},{"name":"Smooth Boot (Reloaded)","status":"old","title":"Smooth Boot (Reloaded)","slug":"smooth-boot-reloaded","note":""},{"name":"Sodium Dynamic Lights","status":"yes","title":"Sodium/Embeddium Dynamic Lights","slug":"dynamiclights-reforged","note":""},{"name":"Sodium Extras","status":"yes","title":"Sodium Extra","slug":"sodium-extra","note":""},{"name":"Sodium Options API","status":"yes","title":"Sodium/Embeddium Options API","slug":"sodium-options-api","note":""},{"name":"Sophisticated Backpacks","status":"yes","title":"Sophisticated Backpacks","slug":"sophisticated-backpacks","note":""},{"name":"Sophisticated Core","status":"yes","title":"Sophisticated Core","slug":"sophisticated-core","note":""},{"name":"Soulbinding","status":"check","title":"SoulBind","slug":"soulbind","note":"Совпало с SoulBind. Название другое."},{"name":"Sound Physics Remastered","status":"yes","title":"Sound Physics Remastered","slug":"sound-physics-remastered","note":""},{"name":"Species","status":"check","title":"Spicy Species","slug":"spicy-species","note":"Совпало со Spicy Species, не с Species."},{"name":"Strut Your Stuff","status":"yes","title":"Strut Your Stuff (Struts)","slug":"strut-your-stuff","note":""},{"name":"SuperMartijn642's Config Library","status":"miss","title":"SuperMartijn642's Config Lib","slug":"","note":""},{"name":"TFC Aged Alcohol","status":"yes","title":"TFC Aged Alcohol","slug":"tfc-aged-alcohol","note":""},{"name":"TFC Astikor Carts","status":"yes","title":"Astikor Carts TFC","slug":"astikor-carts-tfc","note":""},{"name":"TFC Better Blast Furnace","status":"yes","title":"TFC Better Blast Furnace","slug":"tfc-better-blast-furnace","note":""},{"name":"TFC Canes","status":"yes","title":"TFC Canes","slug":"tfc-canes","note":""},{"name":"TFC Casting with Channels","status":"old","title":"TFC Casting with Channels!","slug":"tfc-casting-with-channels","note":""},{"name":"TFC Hot or Not","status":"yes","title":"TFC Hot or Not","slug":"tfc-hot-or-not","note":""},{"name":"TFC Lunch Box","status":"old","title":"TFC Lunch Box","slug":"tfc-lunch-box","note":""},{"name":"TFC Punishment for Death","status":"old","title":"TFC Punishment for Death","slug":"tfc-punishment-for-death","note":""},{"name":"TFC Ruins","status":"yes","title":"[NoCube's] Explore: TFC Ruins - Structures for TerraFirmaCraft","slug":"tfc-ruins","note":""},{"name":"TFC Scraping Knives","status":"yes","title":"Tfc Scraping Knives","slug":"tfc-scraping-knives","note":""},{"name":"TFC Support Indicator","status":"yes","title":"TFC Support Indicator","slug":"tfc-support-indicator","note":""},{"name":"TFC Tumbleweed","status":"yes","title":"TFC Tumbleweed","slug":"tfc-tumbleweed","note":""},{"name":"TFC Vessel Tooltip","status":"yes","title":"TFC Vessel Tooltip","slug":"tfc-vessel-tooltip","note":""},{"name":"TFC Water Flasks","status":"yes","title":"TFC Water Flasks","slug":"water-flasks","note":""},{"name":"TFC Weld Button","status":"yes","title":"TFC Weld Button","slug":"tfc-weld-button","note":""},{"name":"TFC: Grooming Station","status":"old","title":"TFC Grooming Station","slug":"tfc-grooming-station","note":""},{"name":"TFCGenViewer","status":"yes","title":"TFCGenViewer","slug":"tfcgenviewer","note":""},{"name":"TaCZ Ammo Query","status":"old","title":"TaCZ Ammo Query","slug":"tacz-ammo-query","note":""},{"name":"TaCZ JS","status":"yes","title":"TaCZ JS","slug":"tacz-js","note":""},{"name":"TaCZ Tweaks","status":"old","title":"TaCZ Tweaks","slug":"tacz-tweaks","note":""},{"name":"TerraFirmaCraft","status":"yes","title":"TerraFirmaCraft","slug":"terrafirmacraft","note":""},{"name":"TerraFirmaGreg-Core","status":"old","title":"TerraFirmaGreg-Core","slug":"terrafirmagreg-core","note":""},{"name":"Timeless & Classics Guns: Zero","status":"port","title":"Create: Timeless and Classics Zero [TaCZ] Unofficial Port","slug":"create-timeless-and-classics-zero-tacz-port","note":"Неофициальный порт Create: Timeless and Classics Zero."},{"name":"Timeout Fixes","status":"old","title":"TimeoutFixes","slug":"timeoutfixes","note":""},{"name":"Too Fast","status":"yes","title":"Too Fast","slug":"too-fast","note":""},{"name":"TooManyRecipeViewers","status":"yes","title":"TooManyRecipeViewers (TMRV)","slug":"tmrv","note":""},{"name":"Tool Belt","status":"yes","title":"Tool Belt","slug":"tool-belt","note":""},{"name":"Tumbleweed","status":"check","title":"TFC Tumbleweed","slug":"tfc-tumbleweed","note":"Совпало с TFC Tumbleweed. Отдельный Tumbleweed не подтверждён."},{"name":"U Team Core","status":"yes","title":"U Team Core","slug":"u-team-core","note":""},{"name":"UniLib","status":"yes","title":"UniLib","slug":"unilib","note":""},{"name":"Vintage KubeJS","status":"old","title":"Vintage KubeJS","slug":"vintage-kubejs","note":""},{"name":"Wakes","status":"yes","title":"Wakes","slug":"wakes","note":""},{"name":"Wan Ancient Beasts","status":"miss","title":"Wan's Ancient Beasts","slug":"","note":""},{"name":"Xaero's Minimap","status":"yes","title":"Xaero's Minimap","slug":"xaeros-minimap","note":""},{"name":"Xaero's World Map","status":"yes","title":"Xaero's World Map","slug":"xaeros-world-map","note":""},{"name":"Yeetus Experimentus","status":"yes","title":"Yeetus Experimentus","slug":"yeetusexperimentus","note":""},{"name":"YetAnotherConfigLib","status":"yes","title":"YetAnotherConfigLib","slug":"yacl","note":""},{"name":"aleki's Nifty Ships","status":"old","title":"aleki's Nifty Ships","slug":"alekiships","note":""},{"name":"itemphysicguns","status":"old","title":"ItemPhysic Guns","slug":"itemphysic-guns","note":""},{"name":"libIPN","status":"yes","title":"libIPN","slug":"libipn","note":""}];
+const LABELS = {
+  yes: "Есть на 1.21.1",
+  port: "Порт или другое имя",
+  old: "Есть, но не 1.21.1",
+  miss: "Не найдено",
+  check: "Сомнительное совпадение"
+};
+const COLORS = { yes: "#8fbf7a", port: "#8eb4d4", old: "#e0b15a", miss: "#e07a6a", check: "#c4b8a8" };
+const STATUS_ORDER = ["yes", "port", "old", "miss", "check"];
+
+function groupOf(name) {
+  const n = name.toLowerCase();
+  if (n.startsWith("tfc") || n.includes("terrafirma") || n.includes("firma") || n.includes("beneath") || n.includes("arbor")) return "TFC";
+  if (n.startsWith("create")) return "Create";
+  if (n.startsWith("ae2") || n.includes("greg") || n.includes("mega cell") || n.includes("extendedae") || n.includes("requester")) return "GregTech / AE2";
+  if (n.startsWith("ftb")) return "FTB";
+  if (n.includes("tacz") || n.includes("timeless") || n.includes("gun") || n.includes("ammo")) return "Оружие";
+  if (/lib|api|core|config|kotlin|rhino|architectury|geckolib|curios|patchouli|bookshelf|balm|cloth|moonlight|puzzles|resourceful|octolib|baguette|lodestone|creativecore|konkrete|cucumber|botarium|glodium|polylib|unilib|pandalib|kubejs/.test(n)) return "Библиотеки";
+  return "Остальное";
+}
+
+const groups = ["Все", "TFC", "Create", "GregTech / AE2", "FTB", "Оружие", "Библиотеки", "Остальное"];
+let status = "all";
+let group = "Все";
+
+function counts() {
+  const c = { yes: 0, port: 0, old: 0, miss: 0, check: 0 };
+  for (const m of MODS) c[m.status] += 1;
+  return c;
+}
+
+function renderStats() {
+  const c = counts();
+  const meta = [
+    ["yes", "Есть на 1.21.1"],
+    ["port", "Порт или другое имя"],
+    ["old", "Только старее"],
+    ["miss", "Не найдено"],
+    ["check", "Сомнительно"]
+  ];
+  document.getElementById("stats").innerHTML = meta.map(([k, label]) =>
+    `<div class="stat ${k}"><b>${c[k]}</b><span>${label}</span></div>`
+  ).join("");
+  const total = MODS.length;
+  document.getElementById("bar").innerHTML = STATUS_ORDER.map((k) =>
+    `<i style="width:${(c[k] / total) * 100}%;background:${COLORS[k]}"></i>`
+  ).join("");
+}
+
+function chip(label, on, click) {
+  const b = document.createElement("button");
+  b.className = "chip" + (on ? " on" : "");
+  b.type = "button";
+  b.textContent = label;
+  b.addEventListener("click", click);
+  return b;
+}
+
+function renderControls() {
+  const statusBox = document.getElementById("status");
+  const groupBox = document.getElementById("groups");
+  statusBox.replaceChildren();
+  groupBox.replaceChildren();
+  const statuses = [["all", "Все"], ["yes", "Есть"], ["port", "Порты"], ["old", "Старее"], ["miss", "Нет"], ["check", "Сомнительно"]];
+  for (const [id, label] of statuses) {
+    statusBox.append(chip(label, status === id, () => { status = id; render(); }));
+  }
+  for (const g of groups) {
+    groupBox.append(chip(g, group === g, () => { group = g; render(); }));
+  }
+}
+
+function filtered() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  return MODS.filter((m) => {
+    if (status !== "all" && m.status !== status) return false;
+    if (group !== "Все" && groupOf(m.name) !== group) return false;
+    if (!q) return true;
+    return m.name.toLowerCase().includes(q) || (m.title || "").toLowerCase().includes(q) || (m.slug || "").toLowerCase().includes(q);
+  });
+}
+
+function render() {
+  renderControls();
+  const list = filtered();
+  document.getElementById("shown").textContent = `Показано ${list.length} из ${MODS.length}`;
+  const body = document.getElementById("rows");
+  body.replaceChildren();
+  document.getElementById("empty").hidden = list.length !== 0;
+  for (const m of list) {
+    const tr = document.createElement("tr");
+    const project = m.slug
+      ? `<a href="https://www.curseforge.com/minecraft/mc-mods/${m.slug}" target="_blank" rel="noreferrer">${escapeHtml(m.title || m.slug)}</a>${m.note ? `<span class="sub">${escapeHtml(m.note)}</span>` : ""}`
+      : `<span class="sub">${escapeHtml(m.note || "На CurseForge не найдено")}</span>`;
+    tr.innerHTML = `<td>${escapeHtml(m.name)}</td><td class="mark ${m.status}">${LABELS[m.status]}</td><td>${project}</td><td>${groupOf(m.name)}</td>`;
+    body.append(tr);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+document.getElementById("q").addEventListener("input", render);
+renderStats();
+render();
+</script>
+</body>
+</html>
