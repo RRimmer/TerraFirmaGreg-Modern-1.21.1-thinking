@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TerraFirmaCraft Modern · 1.21.1</title>
+<style>
+  :root {
+    --bg: #141210;
+    --bg-2: #1c1916;
+    --ink: #f3ecdf;
+    --muted: #b3a898;
+    --faint: #7d7368;
+    --line: #3a332c;
+    --copper: #d4844a;
+    --copper-2: #f0c9a0;
+    --yes: #8fbf7a;
+    --port: #8eb4d4;
+    --old: #e0b15a;
+    --miss: #e07a6a;
+    --check: #c4b8a8;
+    --chip: #26221e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    line-height: 1.45;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 36px 24px 64px; }
+  header { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 28px; align-items: end; }
+  .kicker {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--copper);
+    margin: 0 0 8px;
+  }
+  h1 {
+    font-family: Georgia, "Palatino Linotype", serif;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 1.05;
+    margin: 0 0 12px;
+  }
+  .lede { color: var(--muted); max-width: 62ch; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 28px; }
+  .stat {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 12px 14px 10px;
+  }
+  .stat b { display: block; font-family: Georgia, serif; font-size: 28px; font-weight: 500; }
+  .stat span { color: var(--faint); font-size: 12px; }
+  .stat.yes b { color: var(--yes); }
+  .stat.port b { color: var(--port); }
+  .stat.old b { color: var(--old); }
+  .stat.miss b { color: var(--miss); }
+  .stat.check b { color: var(--check); }
+  .bar { display: flex; height: 8px; margin-top: 14px; background: #2a2622; }
+  .bar i { display: block; height: 100%; }
+  .note {
+    margin-top: 22px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--copper);
+    background: var(--bg-2);
+    color: var(--muted);
+  }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 10px; align-items: center; }
+  input[type="search"] {
+    background: var(--bg-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 8px 12px;
+    min-width: 240px;
+    font: inherit;
+  }
+  input:focus { outline: 1px solid var(--copper); }
+  button.chip {
+    background: var(--chip);
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    font: inherit;
+    cursor: pointer;
+  }
+  button.chip.on { color: var(--ink); border-color: var(--copper); background: #2c241c; }
+  .count { color: var(--faint); font-size: 13px; margin: 8px 0 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 600;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+  }
+  td { padding: 10px; border-bottom: 1px solid #2a2622; vertical-align: top; }
+  tr:hover td { background: #1a1714; }
+  a { color: var(--copper-2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .mark { font-size: 13px; }
+  .mark.yes { color: var(--yes); }
+  .mark.port { color: var(--port); }
+  .mark.old { color: var(--old); }
+  .mark.miss { color: var(--miss); }
+  .mark.check { color: var(--check); }
+  .sub { display: block; color: var(--faint); font-size: 12px; margin-top: 3px; }
+  .empty { color: var(--faint); padding: 24px 0; }
+  @media (max-width: 860px) {
+    header, .stats { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 32px; }
+    header { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <p class="kicker">Заметка · Minecraft 1.21.1 · 24 сен 2026</p>
+      <h1>TerraFirmaCraft Modern</h1>
+      <p class="lede">Не сборка. Заметки о том, смогут ли авторы этих модов перейти на 1.21.1. Я просто смотрю, записываю и делюсь мыслями.</p>
+    </div>
+  </header>
+  <div class="stats" id="stats"></div>
+  <div class="bar" id="bar" aria-hidden="true"></div>
+  <p class="note">Смотрю в три места. CurseForge — обычные страницы модов. GitHub — свежие сборки, чужие порты и форки. Modrinth — если на первых двух пусто. Фраза «поиск попал в чужой аддон» значила только это: первое совпадение было другим проектом с похожим именем, и я не стал считать его за нужный мод. Такие строки помечены отдельно. На 1.21.1 почти все уже на NeoForge. APTweaks выделяется: файл 1.21.1 есть, но он всё ещё Forge.</p>
+  <div class="controls" id="status"></div>
+  <div class="controls" id="groups"></div>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Название или slug" autocomplete="off">
+  </div>
+  <p class="count" id="shown"></p>
+  <table>
+    <thead>
+      <tr><th>Мод из списка</th><th>Статус</th><th>Где нашлось</th><th>Группа</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="empty" id="empty" hidden>По этому фильтру модов нет.</p>
+</div>
+<script>
+const MODS = [{"name":"AAA Particles","status":"yes","title":"AAA Particles","slug":"aaa-particles","note":"","source":"CurseForge","url":""},{"name":"AE2 Insert Export Card","status":"yes","title":"AE2 Import Export Card","slug":"ae2-import-export-card","note":"В старом имени было Insert. На 1.21.1 проект называется Import Export Card, загрузчик NeoForge.","source":"CurseForge","url":""},{"name":"AE2NetworkAnalyzer","status":"yes","title":"AE2 Network Analyser","slug":"ae2-network-analyser","note":"На 1.21.1 есть, NeoForge.","source":"CurseForge","url":""},{"name":"AE2WTLib","status":"yes","title":"Applied Energistics 2 Wireless Terminals","slug":"applied-energistics-2-wireless-terminals","note":"Это сама библиотека, не сторонний патч. На 1.21.1 есть, NeoForge.","source":"CurseForge","url":""},{"name":"AGS ModernMarkings Mod","status":"yes","title":"ModernMarkings","slug":"modernmarkings","note":"Есть файл ags_modernmarkings для 1.21.1.","source":"CurseForge","url":""},{"name":"AI-Improvements","status":"yes","title":"AI Improvements: Performance Tuning","slug":"ai-improvements","note":"","source":"CurseForge","url":""},{"name":"APTweaks: Core","status":"yes","title":"APTweaks: Core (11.x Classic)","slug":"adaptive-performance-tweaks-core","note":"Файл 1.21.1 есть, но загрузчик Forge, не NeoForge. На 1.21.1 большинство модов уже на NeoForge.","source":"CurseForge","url":""},{"name":"APTweaks: Gamerules","status":"yes","title":"APTweaks: Gamerules (11.x Classic)","slug":"adaptive-performance-tweaks-gamerules","note":"Файл 1.21.1 есть, но загрузчик Forge, не NeoForge. На 1.21.1 большинство модов уже на NeoForge.","source":"CurseForge","url":""},{"name":"APTweaks: Items","status":"yes","title":"APTweaks: Items (11.x Classic)","slug":"adaptive-performance-tweaks-items","note":"Файл 1.21.1 есть, но загрузчик Forge, не NeoForge. На 1.21.1 большинство модов уже на NeoForge.","source":"CurseForge","url":""},{"name":"APTweaks: Player","status":"yes","title":"APTweaks: Player Login Optimization and Protection (11.x Classic)","slug":"adaptive-performance-tweaks-player","note":"Файл 1.21.1 есть, но загрузчик Forge, не NeoForge. На 1.21.1 большинство модов уже на NeoForge.","source":"CurseForge","url":""},{"name":"Ad Astra","status":"yes","title":"Ad Astra","slug":"ad-astra","note":"","source":"CurseForge","url":""},{"name":"Additional Placements","status":"yes","title":"Additional Placements","slug":"additional-placements","note":"","source":"CurseForge","url":""},{"name":"Advanced Peripherals","status":"yes","title":"Advanced Peripherals","slug":"advanced-peripherals","note":"","source":"CurseForge","url":""},{"name":"AdvancedCoreInfo","status":"yes","title":"Advanced Core Info (ACI)","slug":"advanced-core-info","note":"","source":"CurseForge","url":""},{"name":"AdvancedLootInfo","status":"yes","title":"Advanced Loot Info (ALI)","slug":"advanced-loot-info","note":"","source":"CurseForge","url":""},{"name":"All The Leaks","status":"yes","title":"AllTheLeaks (Memory Leak Fix)","slug":"alltheleaks","note":"","source":"CurseForge","url":""},{"name":"Almanac","status":"yes","title":"Almanac Lib","slug":"almanac-lib","note":"","source":"CurseForge","url":""},{"name":"AmbientSounds","status":"yes","title":"AmbientSounds 6","slug":"ambientsounds","note":"","source":"CurseForge","url":""},{"name":"Applied Ammo Box","status":"yes","title":"[TaCZ] Applied Ammo Box","slug":"tacz-applied-ammo-box","note":"","source":"CurseForge","url":""},{"name":"ArborFirmaCraft","status":"yes","title":"ArborFirmaCraft","slug":"arborfirmacraft","note":"","source":"CurseForge","url":""},{"name":"Architectury","status":"yes","title":"Architectury API","slug":"architectury-api","note":"","source":"CurseForge","url":""},{"name":"Armor Quick Swap","status":"yes","title":"Armor Quick Swap","slug":"armor-quick-swap","note":"","source":"CurseForge","url":""},{"name":"Arthropocolypse","status":"old","title":"[Deprecated] Arthropocolypse","slug":"arthropocolypse","note":"","source":"CurseForge","url":""},{"name":"AstikorCarts Redux","status":"yes","title":"AstikorCarts Redux","slug":"astikor-carts-redux","note":"","source":"CurseForge","url":""},{"name":"AttributeFix","status":"yes","title":"AttributeFix","slug":"attributefix","note":"","source":"CurseForge","url":""},{"name":"BaguetteLib","status":"yes","title":"BaguetteLib","slug":"baguettelib","note":"","source":"CurseForge","url":""},{"name":"Balm","status":"yes","title":"Balm","slug":"balm","note":"","source":"CurseForge","url":""},{"name":"Barrels 2012","status":"yes","title":"Barrels 2012","slug":"barrels-2012","note":"","source":"CurseForge","url":""},{"name":"Beneath","status":"yes","title":"Beneath","slug":"beneath","note":"","source":"CurseForge","url":""},{"name":"Better P2P","status":"yes","title":"Better P2P","slug":"betterp2p","note":"","source":"CurseForge","url":""},{"name":"Better Ping Display","status":"yes","title":"Better Ping Display","slug":"better-ping-display","note":"","source":"CurseForge","url":""},{"name":"Block Runner","status":"yes","title":"Block Runner","slug":"block-runner","note":"","source":"CurseForge","url":""},{"name":"Blur (Fabric)","status":"yes","title":"Blur+","slug":"blur-fabric","note":"","source":"CurseForge","url":""},{"name":"Bookshelf","status":"yes","title":"Bookshelf","slug":"bookshelf","note":"","source":"CurseForge","url":""},{"name":"Botarium","status":"old","title":"Botarium","slug":"botarium","note":"","source":"CurseForge","url":""},{"name":"Building Gadgets 2","status":"miss","title":"","slug":"","note":"Второй части на 1.21.1 не нашёл. На 1.21.1 есть первая Building Gadgets, это другой мод.","source":"","url":""},{"name":"C4t2's structures(TFC)","status":"miss","title":"TFC ruined world","slug":"","note":"","source":"","url":""},{"name":"CC UTF-8 Compat","status":"old","title":"CC UTF-8 Compat","slug":"cc-utf-8-compat","note":"","source":"CurseForge","url":""},{"name":"CC: Tweaked","status":"yes","title":"CC: Tweaked","slug":"cc-tweaked","note":"На 1.21.1 есть. Страница помечает эту сборку как NeoForge.","source":"CurseForge","url":""},{"name":"Carpeted","status":"yes","title":"Carpeted","slug":"carpeted","note":"","source":"CurseForge","url":""},{"name":"Carry On","status":"yes","title":"Carry On","slug":"carry-on","note":"","source":"CurseForge","url":""},{"name":"Chalk","status":"yes","title":"Chalk","slug":"chalk","note":"","source":"CurseForge","url":""},{"name":"Chat Heads","status":"yes","title":"Chat Heads","slug":"chat-heads","note":"","source":"CurseForge","url":""},{"name":"Cherished Worlds","status":"yes","title":"Cherished Worlds","slug":"cherished-worlds","note":"","source":"CurseForge","url":""},{"name":"Chest Tracker","status":"yes","title":"Chest Tracker","slug":"chest-tracker","note":"","source":"CurseForge","url":""},{"name":"Chunky","status":"old","title":"Chunky","slug":"chunky","note":"Проект есть. В свежих файлах виден 1.20.1, не 1.21.1.","source":"CurseForge","url":""},{"name":"Client Tweaks","status":"yes","title":"Client Tweaks","slug":"client-tweaks","note":"","source":"CurseForge","url":""},{"name":"Cloth Config v10 API","status":"yes","title":"Cloth Config API (Fabric/Forge/NeoForge)","slug":"cloth-config","note":"","source":"CurseForge","url":""},{"name":"Colorwheel","status":"yes","title":"Colorwheel","slug":"colorwheel","note":"","source":"CurseForge","url":""},{"name":"Comforts","status":"yes","title":"Comforts","slug":"comforts","note":"","source":"CurseForge","url":""},{"name":"Configuration","status":"yes","title":"Configuration","slug":"configuration","note":"","source":"CurseForge","url":""},{"name":"Construction Wand","status":"yes","title":"Construction Wand (Fabric)","slug":"construction-wand-fabric","note":"","source":"CurseForge","url":""},{"name":"Controlling","status":"yes","title":"Controlling","slug":"controlling","note":"","source":"CurseForge","url":""},{"name":"Corpse","status":"yes","title":"Corpse","slug":"corpse","note":"","source":"CurseForge","url":""},{"name":"Corpse Curios Compatibility","status":"yes","title":"Corpse x Curios API Compat","slug":"corpse-x-curios-api-compat","note":"На CurseForge находится поиском по версии 1.21.1.","source":"CurseForge","url":""},{"name":"CosmeticArmorReworked","status":"yes","title":"Cosmetic Armor Reworked","slug":"cosmetic-armor-reworked","note":"","source":"CurseForge","url":""},{"name":"Cosy Critters & Creepy Crawlies","status":"yes","title":"Cosy Critters & Creepy Crawlies","slug":"cosy-critters","note":"","source":"CurseForge","url":""},{"name":"CraftPresence","status":"yes","title":"CraftPresence","slug":"craftpresence","note":"","source":"CurseForge","url":""},{"name":"Crafting Station Improved","status":"old","title":"Crafting Station Improved","slug":"crafting-station-improved","note":"","source":"CurseForge","url":""},{"name":"CraftingTweaks","status":"yes","title":"Crafting Tweaks","slug":"crafting-tweaks","note":"","source":"CurseForge","url":""},{"name":"Crash Assistant","status":"yes","title":"Crash Assistant","slug":"crash-assistant","note":"","source":"CurseForge","url":""},{"name":"CrashExploitFixer","status":"yes","title":"CrashExploitFixer","slug":"crashexploitfixer","note":"","source":"CurseForge","url":""},{"name":"Create","status":"yes","title":"Create","slug":"create","note":"","source":"CurseForge","url":""},{"name":"Create Crafts & Additions","status":"yes","title":"Create Crafts & Additions","slug":"createaddition","note":"","source":"CurseForge","url":""},{"name":"Create Deco","status":"yes","title":"Create Deco","slug":"create-deco","note":"","source":"CurseForge","url":""},{"name":"Create FluidLogistics","status":"yes","title":"Create: FluidLogistics","slug":"create-fluidlogistic","note":"","source":"CurseForge","url":""},{"name":"Create Horse Power","status":"yes","title":"Create Horse Power","slug":"create-horse-power","note":"","source":"CurseForge","url":""},{"name":"Create Hypertube","status":"yes","title":"Create: Hypertubes","slug":"hypertubes","note":"","source":"CurseForge","url":""},{"name":"Create Liquid Fuel","status":"yes","title":"Create: Liquid Fuel","slug":"create-liquid-fuel","note":"","source":"CurseForge","url":""},{"name":"Create Picky Wheels","status":"yes","title":"Create Picky Wheels","slug":"create-picky-waterwheels","note":"","source":"CurseForge","url":""},{"name":"Create Repair: Unofficial Create Community Patch","status":"miss","title":"","slug":"","note":"","source":"","url":""},{"name":"Create Stock Bridge","status":"yes","title":"Create Stock Bridge","slug":"create-stock-bridge","note":"","source":"CurseForge","url":""},{"name":"Create: Connected","status":"yes","title":"Create: Connected","slug":"create-connected","note":"","source":"CurseForge","url":""},{"name":"Create: Copycats+","status":"yes","title":"Create: Copycats+","slug":"copycats","note":"","source":"CurseForge","url":""},{"name":"Create: Steam 'n' Rails","status":"old","title":"Create: Steam 'n' Rails","slug":"create-steam-n-rails","note":"","source":"CurseForge","url":""},{"name":"Create: Steam Powered","status":"old","title":"Create: Steam Powered (1.16/1.18/1.20)","slug":"steam-powered-create","note":"","source":"CurseForge","url":""},{"name":"Create: Threaded Trains","status":"yes","title":"Create: Threaded Trains","slug":"create-threaded-trains","note":"","source":"CurseForge","url":""},{"name":"Create: Vintage Improvements","status":"port","title":"Create-Vintage-Improvements-Lite","slug":"create-vintage-improvements-lite","note":"На 1.21.1 есть Create-Vintage-Improvements-Lite, не полный мод.","source":"CurseForge","url":""},{"name":"CreativeCore","status":"yes","title":"CreativeCore","slug":"creativecore","note":"","source":"CurseForge","url":""},{"name":"Cubes Without Borders","status":"yes","title":"Cubes Without Borders","slug":"cubes-without-borders","note":"","source":"CurseForge","url":""},{"name":"Cucumber Library","status":"yes","title":"Cucumber Library","slug":"cucumber","note":"","source":"CurseForge","url":""},{"name":"Curios API","status":"yes","title":"Curios API","slug":"curios","note":"","source":"CurseForge","url":""},{"name":"Cut Through","status":"yes","title":"Cut Through","slug":"cut-through","note":"","source":"CurseForge","url":""},{"name":"Dea's Fission","status":"old","title":"Dea's Fission","slug":"deafission","note":"","source":"CurseForge","url":""},{"name":"Decay 2012","status":"yes","title":"Decay 2012","slug":"decay-2012","note":"","source":"CurseForge","url":""},{"name":"Default Options","status":"yes","title":"Default Options","slug":"default-options","note":"","source":"CurseForge","url":""},{"name":"Desert Behemoths: Sandworms!","status":"old","title":"Desert Behemoths: Sandworms!","slug":"desert-behemoths-sandworms","note":"","source":"CurseForge","url":""},{"name":"Detected setBlock Be Gone","status":"yes","title":"Detected setBlock Be Gone","slug":"detected-setblock-be-gone","note":"","source":"CurseForge","url":""},{"name":"Digger Helmet","status":"old","title":"Digger Helmet","slug":"digger-helmet","note":"","source":"CurseForge","url":""},{"name":"Distant Horizons","status":"yes","title":"Distant Horizons: A Level of Detail mod","slug":"distant-horizons","note":"","source":"CurseForge","url":""},{"name":"Do a Barrel Roll","status":"yes","title":"Do a Barrel Roll","slug":"do-a-barrel-roll","note":"","source":"CurseForge","url":""},{"name":"Domum Ornamentum","status":"yes","title":"Domum Ornamentum","slug":"domum-ornamentum","note":"","source":"CurseForge","url":""},{"name":"Drippy Loading Screen","status":"yes","title":"Drippy Loading Screen","slug":"drippy-loading-screen","note":"","source":"CurseForge","url":""},{"name":"Durak Mode","status":"miss","title":"Gurakai's Modular Enhancement Materials","slug":"","note":"","source":"","url":""},{"name":"EMI","status":"yes","title":"EMI","slug":"emi","note":"","source":"CurseForge","url":""},{"name":"EMI++","status":"yes","title":"EMI++","slug":"emixx","note":"","source":"CurseForge","url":""},{"name":"Embeddium","status":"yes","title":"Embeddium","slug":"embeddium","note":"","source":"CurseForge","url":""},{"name":"Enderman Overhaul","status":"yes","title":"Enderman Overhaul","slug":"enderman-overhaul","note":"","source":"CurseForge","url":""},{"name":"EnhancedVisuals","status":"yes","title":"EnhancedVisuals","slug":"enhancedvisuals","note":"","source":"CurseForge","url":""},{"name":"EntityCulling","status":"yes","title":"Entity Culling Fabric/Forge","slug":"entityculling","note":"","source":"CurseForge","url":""},{"name":"Epic Knights of TerraFirma","status":"old","title":"Epic Knights of TerraFirma","slug":"knights-of-terrafirma","note":"","source":"CurseForge","url":""},{"name":"Epic Knights: Antique Legacy","status":"yes","title":"Epic Knights: Antique Legacy","slug":"epic-knights-antique-legacy","note":"","source":"CurseForge","url":""},{"name":"Epic-Knights: Shields, Armor and Weapons","status":"yes","title":"Epic Knights: Shields, Armor and Weapons [Fabric/Forge/NeoForge]","slug":"epic-knights-armor-and-weapons","note":"","source":"CurseForge","url":""},{"name":"Etched","status":"yes","title":"Etched","slug":"etched","note":"","source":"CurseForge","url":""},{"name":"Euphoria Patcher","status":"yes","title":"Euphoria Patches","slug":"euphoria-patches","note":"В версиях проекта есть 1.21.1, в том числе NeoForge.","source":"CurseForge","url":""},{"name":"Every Compat","status":"yes","title":"Every Compat (Wood Good)","slug":"every-compat","note":"","source":"CurseForge","url":""},{"name":"Exposure","status":"yes","title":"Exposure","slug":"exposure","note":"","source":"CurseForge","url":""},{"name":"ExtendedAE","status":"yes","title":"ExtendedAE","slug":"ex-pattern-provider","note":"","source":"CurseForge","url":""},{"name":"Extreme Sound Muffler","status":"yes","title":"Extreme sound muffler - (Neo)Forge","slug":"extreme-sound-muffler","note":"","source":"CurseForge","url":""},{"name":"FPS Reducer","status":"yes","title":"FPS Reducer","slug":"fps-reducer","note":"","source":"CurseForge","url":""},{"name":"FTB Backups 2","status":"yes","title":"FTB Backups 2","slug":"ftb-backups-2","note":"","source":"CurseForge","url":""},{"name":"FTB Chunks","status":"yes","title":"FTB Chunks (NeoForge)","slug":"ftb-chunks","note":"Есть файл [NEOFORGE][1.21.1].","source":"CurseForge","url":""},{"name":"FTB Chunks x Xaero's Map Compat","status":"yes","title":"FTB Chunks x Xaero's Compat","slug":"ftbxaerocompat","note":"","source":"CurseForge","url":""},{"name":"FTB Essentials","status":"yes","title":"FTB Essentials (Forge & Fabric)","slug":"ftb-essentials","note":"","source":"CurseForge","url":""},{"name":"FTB Filter System","status":"yes","title":"FTB Filter System","slug":"ftb-filter-system","note":"","source":"CurseForge","url":""},{"name":"FTB Library","status":"yes","title":"FTB Library (NeoForge)","slug":"ftb-library-forge","note":"","source":"CurseForge","url":""},{"name":"FTB Quests","status":"yes","title":"FTB Quests (NeoForge)","slug":"ftb-quests-forge","note":"Есть файл [NEOFORGE][1.21.1].","source":"CurseForge","url":""},{"name":"FTB Ranks","status":"yes","title":"FTB Ranks (NeoForge)","slug":"ftb-ranks-forge","note":"","source":"CurseForge","url":""},{"name":"FTB Teams","status":"yes","title":"FTB Teams (NeoForge)","slug":"ftb-teams-forge","note":"Есть файл [NEOFORGE][1.21.1].","source":"CurseForge","url":""},{"name":"FTB XMod Compat","status":"yes","title":"FTB XMod Compat","slug":"ftb-xmod-compat","note":"","source":"CurseForge","url":""},{"name":"FancyMenu","status":"yes","title":"FancyMenu","slug":"fancymenu","note":"","source":"CurseForge","url":""},{"name":"Fast IP Ping","status":"yes","title":"Fast IP Ping","slug":"fast-ip-ping","note":"","source":"CurseForge","url":""},{"name":"Fast Suite","status":"yes","title":"FastSuite","slug":"fastsuite","note":"","source":"CurseForge","url":""},{"name":"Fast Workbench","status":"yes","title":"FastWorkbench","slug":"fastworkbench","note":"","source":"CurseForge","url":""},{"name":"Ferrite Core","status":"yes","title":"FerriteCore ((Neo)Forge)","slug":"ferritecore","note":"","source":"CurseForge","url":""},{"name":"Firma: Civilization","status":"old","title":"Firma: Civilization (TFC)","slug":"firmaciv","note":"","source":"CurseForge","url":""},{"name":"FirmaCiv+","status":"check","title":"Firma: Civilization (TFC)","slug":"firmaciv","note":"Отдельный FirmaCiv+ не найден. Совпал с Firma: Civilization без файлов 1.21.1.","source":"CurseForge","url":""},{"name":"Firmalife","status":"yes","title":"FirmaLife","slug":"firmalife","note":"","source":"CurseForge","url":""},{"name":"FlickerFix","status":"yes","title":"FlickerFix","slug":"flickerfix","note":"","source":"CurseForge","url":""},{"name":"Fowl Play","status":"yes","title":"Fowl Play","slug":"fowlplay","note":"","source":"CurseForge","url":""},{"name":"FramedBlocks","status":"yes","title":"FramedBlocks","slug":"framedblocks","note":"","source":"CurseForge","url":""},{"name":"FullStack Watchdog","status":"yes","title":"FullStack Watchdog","slug":"fullstack-watchdog","note":"","source":"CurseForge","url":""},{"name":"Fzzy Config","status":"yes","title":"Fzzy Config","slug":"fzzy-config","note":"","source":"CurseForge","url":""},{"name":"GeckoLib 4","status":"yes","title":"GeckoLib","slug":"geckolib","note":"","source":"CurseForge","url":""},{"name":"Glodium","status":"yes","title":"Glodium","slug":"glodium","note":"","source":"CurseForge","url":""},{"name":"GoProne","status":"old","title":"GoProne","slug":"goprone","note":"","source":"CurseForge","url":""},{"name":"Grappling Hook Mod","status":"port","title":"Grappling Hook Mod: Skybound","slug":"grapplemod-skybound","note":"На 1.21.1 проект называется Grappling Hook Mod: Skybound.","source":"CurseForge","url":""},{"name":"Greate","status":"old","title":"Greate","slug":"greate","note":"Проект есть. В поиске CurseForge с фильтром 1.21.1 его нет.","source":"CurseForge","url":""},{"name":"GregTech","status":"yes","title":"GregTech CEu Modern","slug":"gregtechceu-modern","note":"","source":"CurseForge","url":""},{"name":"GregTech Modern Utilities","status":"old","title":"GregTech Modern Utilities","slug":"gregtech-modern-utilities","note":"","source":"CurseForge","url":""},{"name":"GregTech Molecule Drawings","status":"yes","title":"GregTech Molecule Drawings","slug":"gregtech-molecule-drawings","note":"","source":"CurseForge","url":""},{"name":"Gregtech Terminals","status":"old","title":"Gregtech Terminals","slug":"gtceu-terminals","note":"","source":"CurseForge","url":""},{"name":"GuideME","status":"yes","title":"GuideME","slug":"guideme","note":"","source":"CurseForge","url":""},{"name":"Hang Glider","status":"yes","title":"Hang Glider","slug":"hang-glider","note":"","source":"CurseForge","url":""},{"name":"Horses Can Swim","status":"yes","title":"Horses can Swim","slug":"horses-can-swim","note":"","source":"CurseForge","url":""},{"name":"I <3 TFC","status":"miss","title":"TFC + IE Crossover","slug":"","note":"","source":"","url":""},{"name":"ImmediatelyFast","status":"yes","title":"ImmediatelyFast","slug":"immediatelyfast","note":"","source":"CurseForge","url":""},{"name":"Immersive Aircraft","status":"yes","title":"Immersive Aircraft","slug":"immersive-aircraft","note":"","source":"CurseForge","url":""},{"name":"Immersive Optimization","status":"yes","title":"Immersive Optimization","slug":"immersive-optimization","note":"","source":"CurseForge","url":""},{"name":"Inventory HUD+","status":"yes","title":"Inventory HUD+","slug":"inventory-hud-forge","note":"","source":"CurseForge","url":""},{"name":"Inventory Profiles Next","status":"yes","title":"Inventory Profiles Next","slug":"inventory-profiles-next","note":"","source":"CurseForge","url":""},{"name":"Iris Shader Folder","status":"yes","title":"Iris/Oculus Shader Folder","slug":"iris-shader-folder","note":"","source":"CurseForge","url":""},{"name":"IrisSearch","status":"yes","title":"Iris & Oculus Search","slug":"iris-search","note":"","source":"CurseForge","url":""},{"name":"ItemPhysicLite","status":"yes","title":"ItemPhysic Lite","slug":"itemphysic-lite","note":"","source":"CurseForge","url":""},{"name":"Jade","status":"yes","title":"Jade","slug":"jade","note":"","source":"CurseForge","url":""},{"name":"Jade Addons","status":"yes","title":"Jade Addons (Neo/Forge)","slug":"jade-addons","note":"","source":"CurseForge","url":""},{"name":"Jellies","status":"old","title":"Jellies","slug":"jellies","note":"","source":"CurseForge","url":""},{"name":"Konkrete","status":"yes","title":"Konkrete","slug":"konkrete","note":"","source":"CurseForge","url":""},{"name":"Kotlin for Forge","status":"yes","title":"Kotlin for Forge","slug":"kotlin-for-forge","note":"","source":"CurseForge","url":""},{"name":"Krypton Reno","status":"yes","title":"Krypton Reno","slug":"krypton-fnp","note":"","source":"CurseForge","url":""},{"name":"KubeJS","status":"yes","title":"KubeJS","slug":"kubejs","note":"","source":"CurseForge","url":""},{"name":"KubeJS Create","status":"yes","title":"KubeJS Create","slug":"kubejs-create","note":"","source":"CurseForge","url":""},{"name":"KubeJS TFC","status":"yes","title":"KubeJS TFC","slug":"kubejs-tfc","note":"","source":"CurseForge","url":""},{"name":"Let Me Despawn","status":"yes","title":"Let Me Despawn","slug":"let-me-despawn","note":"","source":"CurseForge","url":""},{"name":"Lithostitched","status":"yes","title":"Lithostitched","slug":"lithostitched","note":"","source":"CurseForge","url":""},{"name":"Load My F***ing Tags","status":"old","title":"Load My F***ing Tags","slug":"load-my-fucking-tags","note":"Свежие файлы для 1.21.9 и 1.21.11. Отдельного файла 1.21.1 не видно.","source":"CurseForge","url":""},{"name":"Lodestone","status":"yes","title":"Lodestone","slug":"lodestone","note":"","source":"CurseForge","url":""},{"name":"LootJS","status":"yes","title":"LootJS: KubeJS Addon","slug":"lootjs","note":"","source":"CurseForge","url":""},{"name":"Lootr","status":"yes","title":"Lootr (Forge & NeoForge)","slug":"lootr","note":"","source":"CurseForge","url":""},{"name":"LowDragLib","status":"old","title":"LowDragLib2 - Forge (Unofficial Port)","slug":"lowdraglib2-unofficial-port","note":"","source":"CurseForge","url":""},{"name":"ME Requester","status":"yes","title":"ME Requester","slug":"merequester","note":"","source":"CurseForge","url":""},{"name":"MEGA Cells","status":"yes","title":"MEGA Cells","slug":"mega-cells","note":"","source":"CurseForge","url":""},{"name":"Macaw's All-In-One for TFC","status":"check","title":"Macaw's Furniture for TFC","slug":"macaws-furniture-tfc","note":"Найден Macaw's Furniture for TFC, не сборка All-In-One.","source":"CurseForge","url":""},{"name":"Man of Many Planes","status":"yes","title":"Man of Many Planes","slug":"man-of-many-planes","note":"","source":"CurseForge","url":""},{"name":"MapSyncer","status":"yes","title":"MapSyncer-for-XaeroWorldmap","slug":"","note":"На CurseForge в поиске 1.21.1 пусто. На Modrinth версия 1.21.1 есть, загрузчики fabric, forge и neoforge. Рядом репозиторий github.com/RuoChennn/MapSyncer-for-XaeroWorldmap.","source":"Modrinth","url":"https://modrinth.com/mod/mapsyncer-for-xaeroworldmap"},{"name":"Measurements","status":"yes","title":"Measurements","slug":"measurements","note":"","source":"CurseForge","url":""},{"name":"Melody","status":"yes","title":"Melody","slug":"melody","note":"","source":"CurseForge","url":""},{"name":"ModernFix","status":"yes","title":"ModernFix","slug":"modernfix","note":"","source":"CurseForge","url":""},{"name":"Moonlight Library","status":"yes","title":"Moonlight Lib","slug":"selene","note":"","source":"CurseForge","url":""},{"name":"More Red","status":"yes","title":"More Red","slug":"more-red","note":"","source":"CurseForge","url":""},{"name":"More Red x CC:Tweaked Compat","status":"yes","title":"More Red x CC:Tweaked Compat","slug":"more-red-x-cc-tweaked-compat","note":"","source":"CurseForge","url":""},{"name":"Mouse Tweaks","status":"yes","title":"Mouse Tweaks","slug":"mouse-tweaks","note":"","source":"CurseForge","url":""},{"name":"MyServerIsCompatible","status":"yes","title":"My Server Is Compatible","slug":"my-server-is-compatible","note":"","source":"CurseForge","url":""},{"name":"NaNHealthFixer","status":"yes","title":"NaN Health Fixer","slug":"nan-health-fixer","note":"","source":"CurseForge","url":""},{"name":"No Chat Reports","status":"yes","title":"No Chat Reports","slug":"no-chat-reports","note":"","source":"CurseForge","url":""},{"name":"Not A Manual Anvil","status":"old","title":"Not A Manual Anvil","slug":"not-a-manual-anvil","note":"","source":"CurseForge","url":""},{"name":"Not Enough Recipe Book","status":"yes","title":"Not Enough Recipe Book [NERB]","slug":"notenoughrecipebook","note":"","source":"CurseForge","url":""},{"name":"NotEnoughAnimations","status":"yes","title":"Not Enough Animations","slug":"not-enough-animations","note":"","source":"CurseForge","url":""},{"name":"OctoLib","status":"yes","title":"ShatterLib | OctoLib","slug":"shatterbyte-lib","note":"","source":"CurseForge","url":""},{"name":"Oculus","status":"old","title":"Oculus","slug":"oculus","note":"Свой проект есть, файлов 1.21.1 нет. На этой версии его обычно заменяет Iris.","source":"CurseForge","url":""},{"name":"PacketFixer","status":"yes","title":"PacketFixer","slug":"packetfixer","note":"","source":"CurseForge","url":""},{"name":"Panda's Falling Tree's","status":"yes","title":"Panda's Falling Trees","slug":"pandas-falling-trees","note":"","source":"CurseForge","url":""},{"name":"PandaLib","status":"yes","title":"PandaLib","slug":"pandalib","note":"","source":"CurseForge","url":""},{"name":"PaperNote","status":"miss","title":"Carbon Paper - Copy and paste signs and noteblocks","slug":"","note":"","source":"","url":""},{"name":"Particle Core","status":"yes","title":"Particle Core","slug":"particle-core","note":"","source":"CurseForge","url":""},{"name":"Particular Reforged","status":"yes","title":"Particular Reforged","slug":"particular-reforged","note":"","source":"CurseForge","url":""},{"name":"Patchouli","status":"yes","title":"Patchouli","slug":"patchouli","note":"","source":"CurseForge","url":""},{"name":"PhoenixChromaticCodes","status":"yes","title":"Phoenix's Chromatic Codes","slug":"phoenixs-chromatic-colors","note":"На CurseForge находится поиском по версии 1.21.1.","source":"CurseForge","url":""},{"name":"Pick Up Notifier","status":"yes","title":"Pick Up Notifier","slug":"pick-up-notifier","note":"","source":"CurseForge","url":""},{"name":"Ping","status":"yes","title":"Ping","slug":"ping","note":"","source":"CurseForge","url":""},{"name":"Placebo","status":"yes","title":"Placebo","slug":"placebo","note":"","source":"CurseForge","url":""},{"name":"PlayerRevive","status":"yes","title":"PlayerRevive","slug":"playerrevive","note":"","source":"CurseForge","url":""},{"name":"PlayerRevive tacz/sbw compitability","status":"old","title":"[TaCZ/SBW] PlayerRevive gun mod compitability","slug":"tacz-sbw-playerrevive-gun-mod-compitability","note":"","source":"CurseForge","url":""},{"name":"PolyLib","status":"yes","title":"PolyLib","slug":"polylib","note":"","source":"CurseForge","url":""},{"name":"Primitive creatures","status":"yes","title":"Primitive creatures","slug":"primitive-creatures","note":"","source":"CurseForge","url":""},{"name":"Puzzles Lib","status":"yes","title":"Puzzles Lib","slug":"puzzles-lib","note":"","source":"CurseForge","url":""},{"name":"Radium","status":"yes","title":"Radium Reforged","slug":"radium-reforged","note":"","source":"CurseForge","url":""},{"name":"Realm RPG: Fallen Adventurers","status":"yes","title":"Realm RPG: Fallen Adventurers","slug":"realm-rpg-fallen-adventurers","note":"","source":"CurseForge","url":""},{"name":"Reliable Recipes","status":"yes","title":"Reliable Recipes","slug":"reliable-recipes","note":"","source":"CurseForge","url":""},{"name":"Reliable Remover","status":"yes","title":"Reliable Remover","slug":"reliable-remover","note":"","source":"CurseForge","url":""},{"name":"Resourceful Lib","status":"yes","title":"Resourceful Lib","slug":"resourceful-lib","note":"","source":"CurseForge","url":""},{"name":"Resourcefulconfig","status":"yes","title":"Resourceful Config","slug":"resourceful-config","note":"","source":"CurseForge","url":""},{"name":"Rhino","status":"yes","title":"Rhino","slug":"rhino","note":"","source":"CurseForge","url":""},{"name":"Riichi Mahjong Forge","status":"old","title":"Riichi Mahjong","slug":"riichi-mahjong","note":"Проект есть. Свежие файлы для 26.x, не для 1.21.1.","source":"CurseForge","url":""},{"name":"Roads and Roofs TFC","status":"yes","title":"Roads and Roofs TFC","slug":"roads-and-roofs-tfc","note":"","source":"CurseForge","url":""},{"name":"Sacks 'N Such","status":"old","title":"Sacks 'N Such","slug":"sacks-n-such","note":"","source":"CurseForge","url":""},{"name":"Saturn","status":"yes","title":"Saturn","slug":"saturn","note":"","source":"CurseForge","url":""},{"name":"Searchables","status":"yes","title":"Searchables","slug":"searchables","note":"","source":"CurseForge","url":""},{"name":"SeasonHud","status":"yes","title":"SeasonHud","slug":"seasonhud","note":"","source":"CurseForge","url":""},{"name":"Showcaser","status":"old","title":"Showcaser","slug":"showcaser","note":"","source":"CurseForge","url":""},{"name":"Simple Voice Chat","status":"yes","title":"Simple Voice Chat","slug":"simple-voice-chat","note":"","source":"CurseForge","url":""},{"name":"Simply Light","status":"yes","title":"Simply Light","slug":"simply-light","note":"","source":"CurseForge","url":""},{"name":"Simply Stacked Dimensions","status":"old","title":"Simply Stacked Dimensions","slug":"simply-stacked-dimensions","note":"","source":"CurseForge","url":""},{"name":"SmartBrainLib","status":"yes","title":"SmartBrainLib (Forge/Fabric/Quilt)","slug":"smartbrainlib","note":"","source":"CurseForge","url":""},{"name":"Smooth Boot (Reloaded)","status":"old","title":"Smooth Boot (Reloaded)","slug":"smooth-boot-reloaded","note":"","source":"CurseForge","url":""},{"name":"Sodium Dynamic Lights","status":"yes","title":"Sodium/Embeddium Dynamic Lights","slug":"dynamiclights-reforged","note":"","source":"CurseForge","url":""},{"name":"Sodium Extras","status":"yes","title":"Sodium Extra","slug":"sodium-extra","note":"","source":"CurseForge","url":""},{"name":"Sodium Options API","status":"yes","title":"Sodium/Embeddium Options API","slug":"sodium-options-api","note":"","source":"CurseForge","url":""},{"name":"Sophisticated Backpacks","status":"yes","title":"Sophisticated Backpacks","slug":"sophisticated-backpacks","note":"","source":"CurseForge","url":""},{"name":"Sophisticated Core","status":"yes","title":"Sophisticated Core","slug":"sophisticated-core","note":"","source":"CurseForge","url":""},{"name":"Soulbinding","status":"check","title":"SoulBind","slug":"soulbind","note":"Совпало с SoulBind. Название другое.","source":"CurseForge","url":""},{"name":"Sound Physics Remastered","status":"yes","title":"Sound Physics Remastered","slug":"sound-physics-remastered","note":"","source":"CurseForge","url":""},{"name":"Species","status":"old","title":"Species","slug":"species","note":"Проект есть. В свежих файлах нет пометки 1.21.1.","source":"CurseForge","url":""},{"name":"Strut Your Stuff","status":"yes","title":"Strut Your Stuff (Struts)","slug":"strut-your-stuff","note":"","source":"CurseForge","url":""},{"name":"SuperMartijn642's Config Library","status":"yes","title":"SuperMartijn642's Config Lib","slug":"supermartijn642s-config-lib","note":"В списке версий проекта есть 1.21.1.","source":"CurseForge","url":""},{"name":"TFC Aged Alcohol","status":"yes","title":"TFC Aged Alcohol","slug":"tfc-aged-alcohol","note":"","source":"CurseForge","url":""},{"name":"TFC Astikor Carts","status":"yes","title":"Astikor Carts TFC","slug":"astikor-carts-tfc","note":"","source":"CurseForge","url":""},{"name":"TFC Better Blast Furnace","status":"yes","title":"TFC Better Blast Furnace","slug":"tfc-better-blast-furnace","note":"","source":"CurseForge","url":""},{"name":"TFC Canes","status":"yes","title":"TFC Canes","slug":"tfc-canes","note":"","source":"CurseForge","url":""},{"name":"TFC Casting with Channels","status":"old","title":"TFC Casting with Channels!","slug":"tfc-casting-with-channels","note":"","source":"CurseForge","url":""},{"name":"TFC Hot or Not","status":"yes","title":"TFC Hot or Not","slug":"tfc-hot-or-not","note":"","source":"CurseForge","url":""},{"name":"TFC Lunch Box","status":"old","title":"TFC Lunch Box","slug":"tfc-lunch-box","note":"","source":"CurseForge","url":""},{"name":"TFC Punishment for Death","status":"old","title":"TFC Punishment for Death","slug":"tfc-punishment-for-death","note":"","source":"CurseForge","url":""},{"name":"TFC Ruins","status":"yes","title":"[NoCube's] Explore: TFC Ruins - Structures for TerraFirmaCraft","slug":"tfc-ruins","note":"","source":"CurseForge","url":""},{"name":"TFC Scraping Knives","status":"yes","title":"Tfc Scraping Knives","slug":"tfc-scraping-knives","note":"","source":"CurseForge","url":""},{"name":"TFC Support Indicator","status":"yes","title":"TFC Support Indicator","slug":"tfc-support-indicator","note":"","source":"CurseForge","url":""},{"name":"TFC Tumbleweed","status":"yes","title":"TFC Tumbleweed","slug":"tfc-tumbleweed","note":"","source":"CurseForge","url":""},{"name":"TFC Vessel Tooltip","status":"yes","title":"TFC Vessel Tooltip","slug":"tfc-vessel-tooltip","note":"","source":"CurseForge","url":""},{"name":"TFC Water Flasks","status":"yes","title":"TFC Water Flasks","slug":"water-flasks","note":"","source":"CurseForge","url":""},{"name":"TFC Weld Button","status":"yes","title":"TFC Weld Button","slug":"tfc-weld-button","note":"","source":"CurseForge","url":""},{"name":"TFC: Grooming Station","status":"old","title":"TFC Grooming Station","slug":"tfc-grooming-station","note":"","source":"CurseForge","url":""},{"name":"TFCGenViewer","status":"yes","title":"TFCGenViewer","slug":"tfcgenviewer","note":"","source":"CurseForge","url":""},{"name":"TaCZ Ammo Query","status":"old","title":"TaCZ Ammo Query","slug":"tacz-ammo-query","note":"","source":"CurseForge","url":""},{"name":"TaCZ JS","status":"yes","title":"TaCZ JS","slug":"tacz-js","note":"","source":"CurseForge","url":""},{"name":"TaCZ Tweaks","status":"old","title":"TaCZ Tweaks","slug":"tacz-tweaks","note":"","source":"CurseForge","url":""},{"name":"TerraFirmaCraft","status":"yes","title":"TerraFirmaCraft","slug":"terrafirmacraft","note":"","source":"CurseForge","url":""},{"name":"TerraFirmaGreg-Core","status":"old","title":"TerraFirmaGreg-Core","slug":"terrafirmagreg-core","note":"","source":"CurseForge","url":""},{"name":"Timeless & Classics Guns: Zero","status":"port","title":"Create: Timeless and Classics Zero [TaCZ] Unofficial Port","slug":"create-timeless-and-classics-zero-tacz-port","note":"Неофициальный порт Create: Timeless and Classics Zero.","source":"CurseForge","url":""},{"name":"Timeout Fixes","status":"old","title":"TimeoutFixes","slug":"timeoutfixes","note":"","source":"CurseForge","url":""},{"name":"Too Fast","status":"yes","title":"Too Fast","slug":"too-fast","note":"","source":"CurseForge","url":""},{"name":"TooManyRecipeViewers","status":"yes","title":"TooManyRecipeViewers (TMRV)","slug":"tmrv","note":"","source":"CurseForge","url":""},{"name":"Tool Belt","status":"yes","title":"Tool Belt","slug":"tool-belt","note":"","source":"CurseForge","url":""},{"name":"Tumbleweed","status":"old","title":"Tumbleweed","slug":"tumbleweed","note":"Отдельный Tumbleweed есть, свежие файлы для 1.20.1. TFC Tumbleweed на 1.21.1 отмечен своей строкой.","source":"CurseForge","url":""},{"name":"U Team Core","status":"yes","title":"U Team Core","slug":"u-team-core","note":"","source":"CurseForge","url":""},{"name":"UniLib","status":"yes","title":"UniLib","slug":"unilib","note":"","source":"CurseForge","url":""},{"name":"Vintage KubeJS","status":"old","title":"Vintage KubeJS","slug":"vintage-kubejs","note":"","source":"CurseForge","url":""},{"name":"Wakes","status":"yes","title":"Wakes","slug":"wakes","note":"","source":"CurseForge","url":""},{"name":"Wan Ancient Beasts","status":"yes","title":"Wan's Ancient Beasts","slug":"wans-ancient-beasts","note":"Есть сборка 1.4.3 для 1.21.1.","source":"CurseForge","url":""},{"name":"Xaero's Minimap","status":"yes","title":"Xaero's Minimap","slug":"xaeros-minimap","note":"","source":"CurseForge","url":""},{"name":"Xaero's World Map","status":"yes","title":"Xaero's World Map","slug":"xaeros-world-map","note":"","source":"CurseForge","url":""},{"name":"Yeetus Experimentus","status":"yes","title":"Yeetus Experimentus","slug":"yeetusexperimentus","note":"","source":"CurseForge","url":""},{"name":"YetAnotherConfigLib","status":"yes","title":"YetAnotherConfigLib","slug":"yacl","note":"","source":"CurseForge","url":""},{"name":"aleki's Nifty Ships","status":"old","title":"aleki's Nifty Ships","slug":"alekiships","note":"","source":"CurseForge","url":""},{"name":"itemphysicguns","status":"old","title":"ItemPhysic Guns","slug":"itemphysic-guns","note":"","source":"CurseForge","url":""},{"name":"libIPN","status":"yes","title":"libIPN","slug":"libipn","note":"","source":"CurseForge","url":""}];
+const LABELS = {
+  yes: "Есть на 1.21.1",
+  port: "Порт или другое имя",
+  old: "Есть, но не 1.21.1",
+  miss: "Не найдено",
+  check: "Сомнительное совпадение"
+};
+const COLORS = { yes: "#8fbf7a", port: "#8eb4d4", old: "#e0b15a", miss: "#e07a6a", check: "#c4b8a8" };
+const STATUS_ORDER = ["yes", "port", "old", "miss", "check"];
+
+function groupOf(name) {
+  const n = name.toLowerCase();
+  if (n.startsWith("tfc") || n.includes("terrafirma") || n.includes("firma") || n.includes("beneath") || n.includes("arbor")) return "TFC";
+  if (n.startsWith("create")) return "Create";
+  if (n.startsWith("ae2") || n.includes("greg") || n.includes("mega cell") || n.includes("extendedae") || n.includes("requester")) return "GregTech / AE2";
+  if (n.startsWith("ftb")) return "FTB";
+  if (n.includes("tacz") || n.includes("timeless") || n.includes("gun") || n.includes("ammo")) return "Оружие";
+  if (/lib|api|core|config|kotlin|rhino|architectury|geckolib|curios|patchouli|bookshelf|balm|cloth|moonlight|puzzles|resourceful|octolib|baguette|lodestone|creativecore|konkrete|cucumber|botarium|glodium|polylib|unilib|pandalib|kubejs/.test(n)) return "Библиотеки";
+  return "Остальное";
+}
+
+const groups = ["Все", "TFC", "Create", "GregTech / AE2", "FTB", "Оружие", "Библиотеки", "Остальное"];
+let status = "all";
+let group = "Все";
+
+function counts() {
+  const c = { yes: 0, port: 0, old: 0, miss: 0, check: 0 };
+  for (const m of MODS) c[m.status] += 1;
+  return c;
+}
+
+function renderStats() {
+  const c = counts();
+  const meta = [
+    ["yes", "Есть на 1.21.1"],
+    ["port", "Порт или другое имя"],
+    ["old", "Только старее"],
+    ["miss", "Не найдено"],
+    ["check", "Сомнительно"]
+  ];
+  document.getElementById("stats").innerHTML = meta.map(([k, label]) =>
+    `<div class="stat ${k}"><b>${c[k]}</b><span>${label}</span></div>`
+  ).join("");
+  const total = MODS.length;
+  document.getElementById("bar").innerHTML = STATUS_ORDER.map((k) =>
+    `<i style="width:${(c[k] / total) * 100}%;background:${COLORS[k]}"></i>`
+  ).join("");
+}
+
+function chip(label, on, click) {
+  const b = document.createElement("button");
+  b.className = "chip" + (on ? " on" : "");
+  b.type = "button";
+  b.textContent = label;
+  b.addEventListener("click", click);
+  return b;
+}
+
+function renderControls() {
+  const statusBox = document.getElementById("status");
+  const groupBox = document.getElementById("groups");
+  statusBox.replaceChildren();
+  groupBox.replaceChildren();
+  const statuses = [["all", "Все"], ["yes", "Есть"], ["port", "Порты"], ["old", "Старее"], ["miss", "Нет"], ["check", "Сомнительно"]];
+  for (const [id, label] of statuses) {
+    statusBox.append(chip(label, status === id, () => { status = id; render(); }));
+  }
+  for (const g of groups) {
+    groupBox.append(chip(g, group === g, () => { group = g; render(); }));
+  }
+}
+
+function filtered() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  return MODS.filter((m) => {
+    if (status !== "all" && m.status !== status) return false;
+    if (group !== "Все" && groupOf(m.name) !== group) return false;
+    if (!q) return true;
+    return m.name.toLowerCase().includes(q) || (m.title || "").toLowerCase().includes(q) || (m.slug || "").toLowerCase().includes(q);
+  });
+}
+
+function render() {
+  renderControls();
+  const list = filtered();
+  document.getElementById("shown").textContent = `Показано ${list.length} из ${MODS.length}`;
+  const body = document.getElementById("rows");
+  body.replaceChildren();
+  document.getElementById("empty").hidden = list.length !== 0;
+  for (const m of list) {
+    const tr = document.createElement("tr");
+    const href = m.url || (m.slug ? `https://www.curseforge.com/minecraft/mc-mods/${m.slug}` : "");
+    const where = m.source ? `<span class="sub">${escapeHtml(m.source)}</span>` : "";
+    const project = href
+      ? `<a href="${href}" target="_blank" rel="noreferrer">${escapeHtml(m.title || m.slug || m.name)}</a>${where}${m.note ? `<span class="sub">${escapeHtml(m.note)}</span>` : ""}`
+      : `<span class="sub">${escapeHtml(m.note || "Пока не нашёл")}</span>`;
+    tr.innerHTML = `<td>${escapeHtml(m.name)}</td><td class="mark ${m.status}">${LABELS[m.status]}</td><td>${project}</td><td>${groupOf(m.name)}</td>`;
+    body.append(tr);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+document.getElementById("q").addEventListener("input", render);
+renderStats();
+render();
+</script>
+</body>
+</html>
